@@ -1,5 +1,5 @@
 Middlewares/FreeRTOS/event_groups.o: \
- C:/TouchGFXProjects/prj_embedded/Middlewares/Third_Party/FreeRTOS/Source/event_groups.c \
+ C:/TouchGFXProjects/danchoa37_project_embedded/danchoa37_project_embedded/Middlewares/Third_Party/FreeRTOS/Source/event_groups.c \
  ../../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
  ../../Core/Inc/FreeRTOSConfig.h \
  ../../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \

@@ -1,5 +1,5 @@
 Middlewares/FreeRTOS/tasks.o: \
- C:/TouchGFXProjects/prj_embedded/Middlewares/Third_Party/FreeRTOS/Source/tasks.c \
+ C:/TouchGFXProjects/danchoa37_project_embedded/danchoa37_project_embedded/Middlewares/Third_Party/FreeRTOS/Source/tasks.c \
  ../../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
  ../../Core/Inc/FreeRTOSConfig.h \
  ../../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \

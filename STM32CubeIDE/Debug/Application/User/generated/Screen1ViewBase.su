@@ -20,13 +20,13 @@
 ../../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/canvas/AbstractPainter.hpp:90:18:virtual void touchgfx::AbstractPainter::tearDown() const	0	static
 ../../TouchGFX/generated/gui_generated/include/gui_generated/screen1_screen/Screen1ViewBase.hpp:25:18:virtual void Screen1ViewBase::tickEvent()	0	static
 ../../Middlewares/ST/touchgfx/framework/include/mvp/View.hpp:36:7:touchgfx::View<Screen1Presenter>::~View()	0	static
-C:/TouchGFXProjects/prj_embedded/TouchGFX/generated/gui_generated/src/screen1_screen/Screen1ViewBase.cpp:31:6:virtual void Screen1ViewBase::setupScreen()	0	static
-C:/TouchGFXProjects/prj_embedded/TouchGFX/generated/gui_generated/src/screen1_screen/Screen1ViewBase.cpp:36:6:virtual void Screen1ViewBase::handleTickEvent()	0	static
+C:/TouchGFXProjects/danchoa37_project_embedded/danchoa37_project_embedded/TouchGFX/generated/gui_generated/src/screen1_screen/Screen1ViewBase.cpp:31:6:virtual void Screen1ViewBase::setupScreen()	0	static
+C:/TouchGFXProjects/danchoa37_project_embedded/danchoa37_project_embedded/TouchGFX/generated/gui_generated/src/screen1_screen/Screen1ViewBase.cpp:36:6:virtual void Screen1ViewBase::handleTickEvent()	0	static
 ../../Middlewares/ST/touchgfx/framework/include/mvp/View.hpp:36:7:virtual touchgfx::View<Screen1Presenter>::~View()	8	static
-C:/TouchGFXProjects/prj_embedded/TouchGFX/generated/gui_generated/src/screen1_screen/Screen1ViewBase.cpp:26:1:Screen1ViewBase::~Screen1ViewBase()	8	static
-C:/TouchGFXProjects/prj_embedded/TouchGFX/generated/gui_generated/src/screen1_screen/Screen1ViewBase.cpp:26:1:virtual Screen1ViewBase::~Screen1ViewBase()	8	static
+C:/TouchGFXProjects/danchoa37_project_embedded/danchoa37_project_embedded/TouchGFX/generated/gui_generated/src/screen1_screen/Screen1ViewBase.cpp:26:1:Screen1ViewBase::~Screen1ViewBase()	8	static
+C:/TouchGFXProjects/danchoa37_project_embedded/danchoa37_project_embedded/TouchGFX/generated/gui_generated/src/screen1_screen/Screen1ViewBase.cpp:26:1:virtual Screen1ViewBase::~Screen1ViewBase()	8	static
 ../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:121:18:virtual void touchgfx::Drawable::invalidateContent() const	0	static
 ../../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Widget.hpp:45:18:virtual void touchgfx::Widget::getLastChild(int16_t, int16_t, touchgfx::Drawable**)	0	static
 ../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:233:10:void touchgfx::Drawable::setPosition(int16_t, int16_t, int16_t, int16_t)	24	static
 ../../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/canvas/AbstractPainterRGB565.hpp:41:5:touchgfx::AbstractPainterRGB565::AbstractPainterRGB565()	16	static
-C:/TouchGFXProjects/prj_embedded/TouchGFX/generated/gui_generated/src/screen1_screen/Screen1ViewBase.cpp:8:1:Screen1ViewBase::Screen1ViewBase()	40	static
+C:/TouchGFXProjects/danchoa37_project_embedded/danchoa37_project_embedded/TouchGFX/generated/gui_generated/src/screen1_screen/Screen1ViewBase.cpp:8:1:Screen1ViewBase::Screen1ViewBase()	40	static

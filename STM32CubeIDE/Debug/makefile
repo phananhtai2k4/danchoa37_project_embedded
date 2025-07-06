@@ -9,12 +9,15 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include Middlewares/USB_Device_Library/subdir.mk
 -include Middlewares/FreeRTOS/subdir.mk
 -include Drivers/STM32F4xx_HAL_Driver/subdir.mk
 -include Drivers/CMSIS/subdir.mk
 -include Drivers/BSP/Components/subdir.mk
 -include Application/User/gui/subdir.mk
 -include Application/User/generated/subdir.mk
+-include Application/User/USB_DEVICE/Target/subdir.mk
+-include Application/User/USB_DEVICE/App/subdir.mk
 -include Application/User/TouchGFX/target/generated/subdir.mk
 -include Application/User/TouchGFX/target/subdir.mk
 -include Application/User/TouchGFX/App/subdir.mk
@@ -95,8 +98,8 @@ all: main-build
 main-build: STM32F429I_DISCO_REV_D01.elf secondary-outputs
 
 # Tool invocations
-STM32F429I_DISCO_REV_D01.elf STM32F429I_DISCO_REV_D01.map: $(OBJS) $(USER_OBJS) C:\TouchGFXProjects\prj_embedded\STM32CubeIDE\STM32F429ZITX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "STM32F429I_DISCO_REV_D01.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\TouchGFXProjects\prj_embedded\STM32CubeIDE\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="STM32F429I_DISCO_REV_D01.map" -Wl,--gc-sections -static -L../../Middlewares/ST/touchgfx/lib/core/cortex_m4f/gcc --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+STM32F429I_DISCO_REV_D01.elf STM32F429I_DISCO_REV_D01.map: $(OBJS) $(USER_OBJS) C:\TouchGFXProjects\danchoa37_project_embedded\danchoa37_project_embedded\STM32CubeIDE\STM32F429ZITX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "STM32F429I_DISCO_REV_D01.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\TouchGFXProjects\danchoa37_project_embedded\danchoa37_project_embedded\STM32CubeIDE\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="STM32F429I_DISCO_REV_D01.map" -Wl,--gc-sections -static -L../../Middlewares/ST/touchgfx/lib/core/cortex_m4f/gcc --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

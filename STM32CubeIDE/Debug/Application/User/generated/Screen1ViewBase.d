@@ -1,5 +1,5 @@
 Application/User/generated/Screen1ViewBase.o: \
- C:/TouchGFXProjects/prj_embedded/TouchGFX/generated/gui_generated/src/screen1_screen/Screen1ViewBase.cpp \
+ C:/TouchGFXProjects/danchoa37_project_embedded/danchoa37_project_embedded/TouchGFX/generated/gui_generated/src/screen1_screen/Screen1ViewBase.cpp \
  ../../TouchGFX/generated/gui_generated/include/gui_generated/screen1_screen/Screen1ViewBase.hpp \
  ../../TouchGFX/gui/include/gui/common/FrontendApplication.hpp \
  ../../TouchGFX/generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp \

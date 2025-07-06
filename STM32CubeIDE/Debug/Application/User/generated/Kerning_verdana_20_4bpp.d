@@ -1,5 +1,5 @@
 Application/User/generated/Kerning_verdana_20_4bpp.o: \
- C:/TouchGFXProjects/prj_embedded/TouchGFX/generated/fonts/src/Kerning_verdana_20_4bpp.cpp \
+ C:/TouchGFXProjects/danchoa37_project_embedded/danchoa37_project_embedded/TouchGFX/generated/fonts/src/Kerning_verdana_20_4bpp.cpp \
  ../../Middlewares/ST/touchgfx/framework/include/touchgfx/Font.hpp \
  ../../Middlewares/ST/touchgfx/framework/include/touchgfx/Unicode.hpp \
  ../../Middlewares/ST/touchgfx/framework/include/touchgfx/hal/Types.hpp \

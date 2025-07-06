@@ -43,6 +43,8 @@ Application/Startup \
 Application/User/TouchGFX/App \
 Application/User/TouchGFX/target \
 Application/User/TouchGFX/target/generated \
+Application/User/USB_DEVICE/App \
+Application/User/USB_DEVICE/Target \
 Application/User \
 Application/User/generated \
 Application/User/gui \
@@ -50,4 +52,5 @@ Drivers/BSP/Components \
 Drivers/CMSIS \
 Drivers/STM32F4xx_HAL_Driver \
 Middlewares/FreeRTOS \
+Middlewares/USB_Device_Library \
 

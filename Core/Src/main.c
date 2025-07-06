@@ -21,12 +21,13 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "app_touchgfx.h"
-#include "stdio.h"
+#include "usb_device.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "Components/ili9341/ili9341.h"
 #include "stm32f429i_discovery_gyroscope.h"
+#include "usbd_hid.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -90,9 +91,24 @@ const osThreadAttr_t GUI_Task_attributes = {
   .stack_size = 8192 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for myTask03 */
+osThreadId_t myTask03Handle;
+const osThreadAttr_t myTask03_attributes = {
+  .name = "myTask03",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
 /* USER CODE BEGIN PV */
+// Khai báo ngoài handle cho USB Device
+extern USBD_HandleTypeDef hUsbDeviceHS;
+
+// Các hằng số để tinh chỉnh chuột
+#define GYRO_TO_MOUSE_SENSITIVITY   0.3f
+#define GYRO_DEADZONE               2.0f
+#define MOUSE_TASK_DELAY_MS         20
 uint8_t isRevD = 0; /* Applicable only for STM32F429I DISCOVERY REVD and above */
 osMessageQueueId_t Queue1Handle;
+osMessageQueueId_t Queue2Handle;
 osStatus_t r_state;
 typedef struct {
     float gx;
@@ -100,6 +116,13 @@ typedef struct {
     float gz;
 } GyroData_t;/* Applicable only for STM32F429I DISCOVERY REVD and above */
 
+// Cấu trúc cho báo cáo HID của chuột
+typedef struct {
+    uint8_t button;
+    int8_t  mouse_x;
+    int8_t  mouse_y;
+    int8_t  wheel;
+} mouseHID;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -113,6 +136,7 @@ static void MX_LTDC_Init(void);
 static void MX_DMA2D_Init(void);
 void StartDefaultTask(void *argument);
 extern void TouchGFX_Task(void *argument);
+void MouseControlTask(void *argument);
 
 /* USER CODE BEGIN PFP */
 static void BSP_SDRAM_Initialization_Sequence(SDRAM_HandleTypeDef *hsdram, FMC_SDRAM_CommandTypeDef *Command);
@@ -213,6 +237,8 @@ int main(void)
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
   Queue1Handle = osMessageQueueNew(10, sizeof(GyroData_t), NULL);
+  // Tạo Queue mới cho chuột
+  Queue2Handle = osMessageQueueNew(10, sizeof(GyroData_t), NULL);
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
@@ -221,6 +247,9 @@ int main(void)
 
   /* creation of GUI_Task */
   GUI_TaskHandle = osThreadNew(TouchGFX_Task, NULL, &GUI_Task_attributes);
+
+  /* creation of myTask03 */
+  myTask03Handle = osThreadNew(MouseControlTask, NULL, &myTask03_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -269,18 +298,11 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLM = 8;
-  RCC_OscInitStruct.PLL.PLLN = 360;
+  RCC_OscInitStruct.PLL.PLLM = 4;
+  RCC_OscInitStruct.PLL.PLLN = 168;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = 4;
+  RCC_OscInitStruct.PLL.PLLQ = 7;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-  /** Activate the Over-Drive mode
-  */
-  if (HAL_PWREx_EnableOverDrive() != HAL_OK)
   {
     Error_Handler();
   }
@@ -625,6 +647,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PA0 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PD12 PD13 */
   GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13;
@@ -972,42 +1000,108 @@ void LCD_Delay(uint32_t Delay)
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
-	/* USER CODE BEGIN 5 */
+  /* init code for USB_DEVICE */
+  MX_USB_DEVICE_Init();
+  /* USER CODE BEGIN 5 */
 	/* Infinite loop */
-	GyroData_t currentGyroData;
-	float bsp_gyro_data[3];
-	osDelay(500);
-	  if (BSP_GYRO_Init() != BSP_GYRO_OK)
-	  {
-	    // Lỗi nghiêm trọng, Gyro không hoạt động.
-	    // Có thể bật một đèn LED lỗi ở đây.
-	    // Task sẽ bị treo ở đây.
-	    Error_Handler();
-	  }
+  GyroData_t currentGyroData;
+    float bsp_gyro_data[3];
+    float gyro_offset[3] = {0.0f, 0.0f, 0.0f};
 
-  for(;;)
-  {
-	  if (BSP_GYRO_GetXYZ(bsp_gyro_data) == BSP_GYRO_OK) {
-	  	        currentGyroData.gx = bsp_gyro_data[0];
-	  	        currentGyroData.gy = bsp_gyro_data[1];
-	  	        currentGyroData.gz = bsp_gyro_data[2];
+    const int CALIBRATION_SAMPLES = 200;
 
-	  	        // Gửi dữ liệu vào Message Queue
-	  	        // Tham số:
-	  	        // 1. Queue handle
-	  	        // 2. Con trỏ đến dữ liệu cần gửi (¤tGyroData)
-	  	        // 3. Ưu tiên message (thường là 0 cho CMSIS-RTOS v2, không dùng)
-	  	        // 4. Timeout (ví dụ: 10ms, hoặc 0 để không block, hoặc osWaitForever)
-	  	        osMessageQueuePut(Queue1Handle, &currentGyroData, 0U, 10); // 10ms timeout
-	  } else {
-		  printf("GyroReadTask: Error reading Gyro data from BSP.\r\n");
-	  }
+    // --- BƯỚC 1: KHỞI TẠO VÀ HIỆU CHỈNH GYRO (GIỮ NGUYÊN) ---
+    osDelay(500);
+    if (BSP_GYRO_Init() != BSP_GYRO_OK)
+    {
+      Error_Handler();
+    }
 
-	  	      osDelay(100);  // giảm tần suất gửi queue
+    for (int i = 0; i < CALIBRATION_SAMPLES; i++)
+    {
+      if (BSP_GYRO_GetXYZ(bsp_gyro_data) == BSP_GYRO_OK)
+      {
+        gyro_offset[0] += bsp_gyro_data[0];
+        gyro_offset[1] += bsp_gyro_data[1];
+        gyro_offset[2] += bsp_gyro_data[2];
+      }
+      osDelay(5);
+    }
+    gyro_offset[0] /= CALIBRATION_SAMPLES;
+    gyro_offset[1] /= CALIBRATION_SAMPLES;
+    gyro_offset[2] /= CALIBRATION_SAMPLES;
 
+    /* Infinite loop */
+    for(;;)
+    {
+  	if (BSP_GYRO_GetXYZ(bsp_gyro_data) == BSP_GYRO_OK)
+      {
+          // Trừ đi sai số offset
+          currentGyroData.gx = bsp_gyro_data[0] - gyro_offset[0];
+          currentGyroData.gy = bsp_gyro_data[1] - gyro_offset[1];
+          currentGyroData.gz = bsp_gyro_data[2] - gyro_offset[2];
 
-  }
+          // --- BƯỚC 2: GỬI DỮ LIỆU VÀO CẢ HAI QUEUE ---
+
+          // Gửi vào Queue 1 cho quả bóng (TouchGFX)
+          // Dùng timeout 0 để không block task này nếu queue của GUI bị đầy
+          if (Queue1Handle != NULL) {
+              osMessageQueuePut(Queue1Handle, &currentGyroData, 0U, 0);
+          }
+          // Gửi vào Queue 2 cho chuột HID
+          if (Queue2Handle != NULL) {
+              osMessageQueuePut(Queue2Handle, &currentGyroData, 0U, 0);
+          }
+  	}
+
+      // Delay 20ms để có tần số cập nhật 50Hz, tốt cho cả GUI và chuột
+  	osDelay(20);
+    }
   /* USER CODE END 5 */
+}
+
+/* USER CODE BEGIN Header_MouseControlTask */
+/**
+* @brief Function implementing the myTask03 thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_MouseControlTask */
+void MouseControlTask(void *argument)
+{
+  /* USER CODE BEGIN MouseControlTask */
+  /* Infinite loop */
+	GyroData_t gyroData;
+	    mouseHID mousehid_report;
+
+	    for(;;)
+	    {
+	        // Chờ và nhận dữ liệu từ Queue 2
+	        // osWaitForever để task này ngủ khi không có dữ liệu, tiết kiệm CPU
+	        if (osMessageQueueGet(Queue2Handle, &gyroData, NULL, osWaitForever) == osOK)
+	        {
+	            // Reset báo cáo chuột
+	            mousehid_report.button = 0;
+	            mousehid_report.mouse_x = 0;
+	            mousehid_report.mouse_y = 0;
+	            mousehid_report.wheel = 0;
+
+	            // Ánh xạ gyro sang chuyển động chuột (logic giống như trước)
+	            if (fabsf(gyroData.gx) > GYRO_DEADZONE) {
+	                mousehid_report.mouse_y = (int8_t)(-gyroData.gx * GYRO_TO_MOUSE_SENSITIVITY);
+	            }
+	            if (fabsf(gyroData.gy) > GYRO_DEADZONE) {
+	                mousehid_report.mouse_x = (int8_t)(gyroData.gy * GYRO_TO_MOUSE_SENSITIVITY);
+	            }
+
+	            // Gửi báo cáo tới PC
+	            USBD_HID_SendReport(&hUsbDeviceHS, (uint8_t*)&mousehid_report, sizeof(mousehid_report));
+	        }
+
+	        // Không cần osDelay ở đây vì osMessageQueueGet với osWaitForever đã điều khiển task rồi.
+	        // Task sẽ chỉ chạy khi có message mới.
+	    }
+  /* USER CODE END MouseControlTask */
 }
 
 /**
