@@ -24,7 +24,8 @@
 
 ## TÁC GIẢ
 
-- Tên nhóm:choadan37
+- Tên nhóm: Dân choa 37
+
 - Thành viên trong nhóm
   |STT|Họ tên|MSSV|Công việc|
   |--:|--|--|--|
@@ -37,7 +38,7 @@
 - Module CPU/dev kit: STM32F429I-DISC1
 - Các kit, module được sử dụng: Module Cảm biến Chuyển động (Gyroscope I3G4250D), Module Màn hình LCD-TFT, Module USB OTG
 
-## Sơ ĐỒ SCHEMATIC
+## SƠ ĐỒ SCHEMATIC
 
 <img src="https://github.com/phananhtai2k4/danchoa37_project_embedded/blob/main/img/gyro_img.jpeg" alt="Logo Khoa KHKTMT" height="400">
 
@@ -137,11 +138,11 @@ hoặc bất cứ dạng nào thể hiện được cách đấu nối giữa c�
           currentGyroData.gz = bsp_gyro_data[2] - gyro_offset[2];
 
           if (Queue1Handle != NULL) {
-              osMessageQueuePut(Queue1Handle, ¤tGyroData, 0U, 0);
+              osMessageQueuePut(Queue1Handle, &currentGyroData, 0U, 0);
           }
 
           if (Queue2Handle != NULL) {
-              osMessageQueuePut(Queue2Handle, ¤tGyroData, 0U, 0);
+              osMessageQueuePut(Queue2Handle, &currentGyroData, 0U, 0);
           }
       }
       osDelay(20);
