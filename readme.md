@@ -14,8 +14,7 @@ Mô tả nội dung cần báo cáo của môn đồ án
 2. Tính năng
 3. Tính năng
 
-- Ảnh chụp minh họa:\
-  ![Ảnh minh họa](https://soict.hust.edu.vn/wp-content/uploads/logo-soict-hust-1-1024x416.png)
+<img src="https://github.com/phananhtai2k4/danchoa37_project_embedded/blob/main/img/logo-soict.png" alt="Logo Khoa KHKTMT" height="360">
 
 ## TÁC GIẢ
 
