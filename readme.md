@@ -29,8 +29,8 @@
   |STT|Họ tên|MSSV|Công việc|
   |--:|--|--|--|
   |1|Phan Anh Tài|20225391|UI & TouchGFX|
-  |2|Nguyễn Văn Thái|20225391|Cảm biến & xử lý dữ liệu|
-  |3|Ngô Đức Đại|20225391|Tích hợp HID Mouse & kết nối hệ thống|
+  |2|Nguyễn Văn Thái|20225394|Cảm biến & xử lý dữ liệu|
+  |3|Ngô Đức Đại|20225272|Tích hợp HID Mouse & kết nối hệ thống|
 
 ## MÔI TRƯỜNG HOẠT ĐỘNG
 
@@ -39,7 +39,7 @@
 
 ## Sơ ĐỒ SCHEMATIC
 
-<img src="https://github.com/phananhtai2k4/danchoa37_project_embedded/blob/main/img/logo-soict.png" alt="Logo Khoa KHKTMT" height="400">
+<img src="https://github.com/phananhtai2k4/danchoa37_project_embedded/blob/main/img/gyro_img.jpeg" alt="Logo Khoa KHKTMT" height="400">
 
 _cách nối dây, kết nối giữa các linh kiện_
 
