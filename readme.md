@@ -2,7 +2,7 @@
 
 - Thiết kế một hệ thống tương tác trực quan sử dụng giao diện TouchGFX.
 
-- Tận dụng cảm biến gia tốc và gyro tích hợp trên STM32F429I-DISC1 để phát hiện góc nghiêng thiết bị.
+- Tận dụng Cảm biến Chuyển động (Gyroscope I3G4250D) tích hợp trên STM32F429I-DISC1 để phát hiện góc nghiêng thiết bị.
 
 - Quả bóng trên màn hình di chuyển tương ứng với hướng nghiêng.
 
@@ -29,8 +29,8 @@
 - Thành viên trong nhóm
   |STT|Họ tên|MSSV|Công việc|
   |--:|--|--|--|
-  |1|Phan Anh Tài|20225391|UI & TouchGFX|
-  |2|Nguyễn Văn Thái|20225394|Cảm biến & xử lý dữ liệu|
+  |1|Phan Anh Tài|20225391|Cảm biến & xử lý dữ liệu|
+  |2|Nguyễn Văn Thái|20225394|UI & TouchGFX|
   |3|Ngô Đức Đại|20225272|Tích hợp HID Mouse & kết nối hệ thống|
 
 ## MÔI TRƯỜNG HOẠT ĐỘNG
