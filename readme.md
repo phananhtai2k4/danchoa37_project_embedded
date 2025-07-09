@@ -75,7 +75,7 @@ hoặc bất cứ dạng nào thể hiện được cách đấu nối giữa c�
   Vai trò: Chịu trách nhiệm cho tất cả những gì người dùng nhìn thấy trên màn hình LCD. Nó vẽ nền, vẽ quả bóng và cung cấp các hàm để di chuyển quả bóng.
   Vị trí: Chạy trên STM32F429ZIT6, sử dụng các tài nguyên phần cứng là bộ điều khiển LTDC và bộ tăng tốc đồ họa DMA2D.
 - Lõi ứng dụng (Application Logic - Có thể xem như là "Back-end" của thiết bị)
-  Thành phần: Mã nguồn trong main.c và các file logic do bạn viết.
+  Thành phần: Mã nguồn trong main.c và các file logic.
   Vai trò: Đây là phần xử lý chính. Nó thực hiện vòng lặp vô tận: đọc dữ liệu thô từ cảm biến, tính toán để chuyển đổi thành tọa độ (cho quả bóng) và độ dịch chuyển (cho chuột), sau đó ra lệnh cho TouchGFX cập nhật màn hình và gửi dữ liệu qua USB.
   Vị trí: Chạy trên STM32F429ZIT6.
 - Các lớp Middleware và Trình điều khiển (Drivers & Middleware)
@@ -87,7 +87,7 @@ hoặc bất cứ dạng nào thể hiện được cách đấu nối giữa c�
   Vị trí: Chạy trên STM32F429ZIT6.
 - Phần mềm trên máy chủ (Host Software)
   Thành phần: Trình điều khiển chuột (Mouse Driver) của hệ điều hành (Windows, macOS, Linux).
-  Vai trò: Đây là phần mềm có sẵn trên máy tính. Nó tự động nhận diện thiết bị của bạn khi cắm vào, nhận các "báo cáo HID" mà kit gửi qua và dịch chúng thành hành động di chuyển con trỏ trên màn hình máy tính.
+  Vai trò: Đây là phần mềm có sẵn trên máy tính. Nó tự động nhận diện thiết bị khi cắm vào, nhận các "báo cáo HID" mà kit gửi qua và dịch chúng thành hành động di chuyển con trỏ trên màn hình máy tính.
   Vị trí: Chạy trên CPU của máy tính.
 
 ### ĐẶC TẢ HÀM
